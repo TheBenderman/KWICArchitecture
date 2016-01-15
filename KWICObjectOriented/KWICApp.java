@@ -10,7 +10,15 @@ public class KWICApp {
 	public void run (String lineFileName)
 	{
 		FileReader fileReader = new FileReader();
-		ArrayList<ArrayList<String>> lines = fileReader.getLines(lineFileName);
+		ArrayList<ArrayList<String>> parsedLines = fileReader.getLines(lineFileName);
+		
+		if (parsedLines == null)
+			return;
+		
+		Lines lines = new Lines(parsedLines);
+		
+		CircularShifter circularShifter = new CircularShifter(lines);
+		circularShifter.createCircularShifts();
 	}
 	
 	public void run (String lineFileName, String stopWordFileName)
