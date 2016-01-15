@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 
 public class KWICApp {
 	
@@ -8,7 +9,8 @@ public class KWICApp {
 	
 	public void run (String lineFileName)
 	{
-		
+		FileReader fileReader = new FileReader();
+		ArrayList<ArrayList<String>> lines = fileReader.getLines(lineFileName);
 	}
 	
 	public void run (String lineFileName, String stopWordFileName)
