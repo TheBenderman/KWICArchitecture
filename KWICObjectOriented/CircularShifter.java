@@ -1,3 +1,11 @@
+// CircularShifter.java
+//
+// Written by : Nathan Bender
+//
+// Purpose:
+// Create all of the possible circular shifts for the collection of lines. Saves all of the circularly shifted lines to a collection
+// to be used by the program output.
+
 import java.util.ArrayList;
 
 public class CircularShifter {
@@ -11,21 +19,29 @@ public class CircularShifter {
 		shiftedLines = new Lines();
 	}
 	
+	// return all of the lines
 	public Lines getShiftedLines()
 	{
 		return shiftedLines;
 	}
 	
+	// create all possible circular shifts
 	public void createCircularShifts()
 	{
+		// iterate over each line
 		for (ArrayList<String> line : originalLines.getLines())
 		{
 			ArrayList<String> shiftedLine;
 			
+			// create all of the circular shifts for the current line
 			for(int i = 0; i < line.size(); i++)
 			{
 				shiftedLine = new ArrayList<String>();
-				
+
+				// wrap the array around if we are not starting at the first index
+				// e.g
+				// original : the force awakens
+				// new : awakens the force
 				for (int j = i; j < (i + line.size()); j++)
 				{
 					if (j >= line.size())
@@ -34,7 +50,7 @@ public class CircularShifter {
 						shiftedLine.add(line.get(j));
 				}
 				
-				shiftedLines.addLine(shiftedLine);
+				shiftedLines.addLine(shiftedLine); // add the circularly shifted line to the collection
 			}
 		}
 	}
