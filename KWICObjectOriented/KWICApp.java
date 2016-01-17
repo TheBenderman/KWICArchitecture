@@ -19,11 +19,30 @@ public class KWICApp {
 		
 		CircularShifter circularShifter = new CircularShifter(lines);
 		circularShifter.createCircularShifts();
+		
+		Sorter sorter = new Sorter(circularShifter);
+		sorter.alphabatizeLines();
+		
+		FileWriter fileWriter = new FileWriter(sorter.getSortedLines());
+		fileWriter.writeLinesToFile();
 	}
 	
 	public void run (String lineFileName, String stopWordFileName)
 	{
+		FileReader fileReader = new FileReader();
+		ArrayList<ArrayList<String>> parsedLines = fileReader.getLines(lineFileName);
+		ArrayList<String> stopWords = fileReader.getStopWords(stopWordFileName);
 		
+		Lines lines = new Lines(parsedLines);
+		
+		CircularShifter circularShifter = new CircularShifter(lines);
+		circularShifter.createCircularShifts();
+		
+		Sorter sorter = new Sorter(circularShifter, stopWords);
+		sorter.alphabatizeLines();
+		
+		FileWriter fileWriter = new FileWriter(sorter.getSortedLines());
+		fileWriter.writeLinesToFile();
 	}
 
 	public static void main(String[] args)

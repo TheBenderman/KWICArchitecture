@@ -2,20 +2,24 @@ import java.util.ArrayList;
 
 public class CircularShifter {
 
-	private ArrayList<ArrayList<ArrayList<String>>> shiftedLines;
+	private Lines shiftedLines;
 	private Lines originalLines;
 	
 	public CircularShifter(Lines lines)
 	{
 		originalLines = lines;
-		shiftedLines = new ArrayList<ArrayList<ArrayList<String>>>();
+		shiftedLines = new Lines();
+	}
+	
+	public Lines getShiftedLines()
+	{
+		return shiftedLines;
 	}
 	
 	public void createCircularShifts()
 	{
 		for (ArrayList<String> line : originalLines.getLines())
 		{
-			ArrayList<ArrayList<String>> shiftedLinesForLine = new ArrayList<ArrayList<String>>();
 			ArrayList<String> shiftedLine;
 			
 			for(int i = 0; i < line.size(); i++)
@@ -30,10 +34,8 @@ public class CircularShifter {
 						shiftedLine.add(line.get(j));
 				}
 				
-				shiftedLinesForLine.add(shiftedLine);
+				shiftedLines.addLine(shiftedLine);
 			}
-			
-			shiftedLines.add(shiftedLinesForLine);
 		}
 	}
 }
