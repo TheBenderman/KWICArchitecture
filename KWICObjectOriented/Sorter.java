@@ -38,8 +38,8 @@ public class Sorter {
 		{
 			for (int j = 1; j < possibleLines.getLines().size(); j++)
 			{
-				String first = possibleLines.getLine(j).get(1); // get the key for the j-th index
-				String second = possibleLines.getLine(j-1).get(1); // get the key for the (j-1)-th index
+				String first = possibleLines.getLine(j).get(0); // get the key for the j-th index
+				String second = possibleLines.getLine(j-1).get(0); // get the key for the (j-1)-th index
 				
 				// Compare the keys of the two elements. If the first is less than the second, swap them
 				if (first.toLowerCase().compareTo(second.toLowerCase()) < 0)

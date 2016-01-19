@@ -55,7 +55,7 @@ public class Lines {
 		// Add each line that does not start with a stop word to a temporary collection
 		for (ArrayList<String> line : lines)
 		{
-			String value = line.get(1);
+			String value = line.get(0);
 			if (!stopWords.contains(value.toLowerCase()))
 				tempLines.add(line);
 		}
