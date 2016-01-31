@@ -10,7 +10,7 @@ In order to run my program, simply use the following:
 	java KWICApp -f inputfile.txt #runs the KWICApp with an input file (-f) and no stop words
 	java KWICApp -f inputfile.txt -s stopwords.txt #runs the KWICApp with an input file (-f) and stop words file (-s)
 
-My program represents the object oriented style because each of the classes in the project serves a specific function. For example, the CircularShifter.java file generates all of the possible circular shifts for the input file, and that is the only thing that it does. 
+My program represents the object oriented style because each of the classes in the project serves a specific function. For example, the CircularShifter.java file generates all of the possible circular shifts for the input file, and that is the only thing that it does. My code is loosely coupled, meaning that each of the classes only does the work that is related to that class.
 
 Following is a list of the functions of each of the classes:
 	CircularShifter.java #creates all possible circular shifts of the input lines
