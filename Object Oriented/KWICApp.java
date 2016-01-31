@@ -62,6 +62,7 @@ public class KWICApp {
 		// If there are 2 arguments, there is no stop word file
 		if (args.length == 2)
 		{
+			// Make sure the parameter supplied is -f
 			if (args[0].equalsIgnoreCase("-f"))
 			{
 				KWICApp kwicapp = new KWICApp();
@@ -77,6 +78,8 @@ public class KWICApp {
 			int fIndex = -1; // index for the file containing the lines
 			int runningIndex = 0; // index for the current loop
 			
+			// search for the -s and -f flags, and then we know the specified file name is the next parameter
+			// e.g: if the first parameter is -f, then the next parameter is the file name
 			for (String s : args)
 			{
 				if (s.equalsIgnoreCase("-s"))
@@ -87,7 +90,7 @@ public class KWICApp {
 				runningIndex = runningIndex + 1;
 			}
 			
-			if (!(sIndex == -1 || fIndex == -1))
+			if (!(sIndex == -1 || fIndex == -1)) // if both the -f and -s flags are available, run kwic
 			{
 				KWICApp kwicapp = new KWICApp();
 				kwicapp.run(args[fIndex], args[sIndex]);

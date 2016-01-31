@@ -5,6 +5,12 @@
 // Purpose:
 // Create all of the possible circular shifts for the collection of lines. Saves all of the circularly shifted lines to a collection
 // to be used by the program output.
+// 
+// E.g: If the line is : The Force Awakens
+// This class will create 3 possible lines:
+// 	The Force Awakens
+// 	Force Awakens The
+// 	Awakens The Force
 
 import java.util.ArrayList;
 
