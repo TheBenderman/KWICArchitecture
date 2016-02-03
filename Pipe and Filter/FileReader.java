@@ -16,16 +16,34 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class FileReader {
-
+public class FileReader extends Filter{
+	
 	public FileReader()
 	{
-		
 	}
 	
-	public ArrayList<ArrayList<String>> getLines(String fileName)
+	public void run()
 	{
-		ArrayList<ArrayList<String>> lines = new ArrayList<ArrayList<String>>();
+		ArrayList<String> arguments = inPipe.read();
+		ArrayList<String> lines = new ArrayList<String>();
+		
+		if (arguments.size() == 1)
+		{
+			lines.addAll(getLines(arguments.get(0)));
+		}
+		else if (arguments.size() == 2)
+		{
+			lines.addAll(getLines(arguments.get(0)));
+			lines.add("#_STOP_WORDS");
+			lines.addAll(getStopWords(arguments.get(1)));
+		}
+		
+		outPipe.write(lines);
+	}
+	
+	public ArrayList<String> getLines(String fileName)
+	{
+		ArrayList<String> lines = new ArrayList<String>();
 		
 		try
 		{
@@ -35,7 +53,7 @@ public class FileReader {
 			for (String line : linesList) // Add each line to the array
 			{
 				if(line != null && !line.isEmpty()) // Don't add the line if it is null
-					lines.add(new ArrayList<String>(Arrays.asList(line.split(" ")))); // Assume that each word is separated by a space
+					lines.add(line); // Assume that each word is separated by a space
 			}
 		}
 		catch(FileNotFoundException fNF)

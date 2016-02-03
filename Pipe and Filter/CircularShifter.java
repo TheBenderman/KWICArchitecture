@@ -7,51 +7,68 @@
 // to be used by the program output.
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
-public class CircularShifter {
-
-	private Lines shiftedLines;
-	private Lines originalLines;
+public class CircularShifter extends Filter{
 	
-	public CircularShifter(Lines lines)
+	public CircularShifter()
 	{
-		originalLines = lines;
-		shiftedLines = new Lines();
+		
 	}
 	
-	// return all of the lines
-	public Lines getShiftedLines()
+	public void run()
 	{
-		return shiftedLines;
+		ArrayList<String> lines = inPipe.read();
+		ArrayList<String> shiftedLines = createCircularShifts(lines);
+		outPipe.write(shiftedLines);
 	}
 	
 	// create all possible circular shifts
-	public void createCircularShifts()
+	public ArrayList<String> createCircularShifts(ArrayList<String> lines)
 	{
+		boolean foundStopWords = false;
+		ArrayList<String> shiftedLines = new ArrayList<String>();
+		
 		// iterate over each line
-		for (ArrayList<String> line : originalLines.getLines())
+		for (String stringLine : lines)
 		{
-			ArrayList<String> shiftedLine;
-			
-			// create all of the circular shifts for the current line
-			for(int i = 0; i < line.size(); i++)
+			if (stringLine.equals("#_STOP_WORDS"))
 			{
-				shiftedLine = new ArrayList<String>();
-
-				// wrap the array around if we are not starting at the first index
-				// e.g
-				// original : the force awakens
-				// new : awakens the force
-				for (int j = i; j < (i + line.size()); j++)
-				{
-					if (j >= line.size())
-						shiftedLine.add(line.get(j-line.size()));
-					else
-						shiftedLine.add(line.get(j));
-				}
+				foundStopWords = true;
+			}
+			
+			ArrayList<String> line = new ArrayList(Arrays.asList(stringLine.split(" ")));
+			
+			if (!foundStopWords)
+			{
+				ArrayList<String> shiftedLine;
 				
-				shiftedLines.addLine(shiftedLine); // add the circularly shifted line to the collection
+				// create all of the circular shifts for the current line
+				for(int i = 0; i < line.size(); i++)
+				{
+					shiftedLine = new ArrayList<String>();
+	
+					// wrap the array around if we are not starting at the first index
+					// e.g
+					// original : the force awakens
+					// new : awakens the force
+					for (int j = i; j < (i + line.size()); j++)
+					{
+						if (j >= line.size())
+							shiftedLine.add(line.get(j-line.size()));
+						else
+							shiftedLine.add(line.get(j));
+					}
+					
+					shiftedLines.add(KWICApp.arrayListToString(shiftedLine)); // add the circularly shifted line to the collection
+				}
+			}
+			else
+			{
+				shiftedLines.add(stringLine);
 			}
 		}
+		
+		return shiftedLines;
 	}
 }

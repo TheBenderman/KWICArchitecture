@@ -11,52 +11,81 @@ import java.util.ArrayList;
 
 public class KWICApp {
 	
-	public KWICApp()
+	public static void run (String lineFileName)
 	{
+		Filter[] filters = new Filter[] {new FileReader(), new CircularShifter(), new Sorter(), new FileWriter()};
 		
+		ArrayList<String> arguments = new ArrayList<String>();
+		arguments.add(lineFileName);
+		
+		filters[0].setInPipe(new Pipe(arguments));
+		
+		for (int i = 0; i < filters.length - 1; i++)
+		{
+			Pipe pipe = new Pipe();
+			filters[i].setOutPipe(pipe);
+			filters[i+1].setInPipe(pipe);
+		}
+		
+		for (Filter filter : filters)
+		{
+			filter.run();
+		}
+		
+		/* 
+		Pipe inPipe = new Pipe(arguments);
+		Pipe outPipe = new Pipe();
+		
+		for (int i = 0; i < filters.length - 1; i++)
+		{
+			outPipe = new Pipe();
+			filters[i].setInPipe(inPipe);
+			filters[i].setOutPipe(outPipe);
+			
+			filters[i].run();
+			
+			inPipe = outPipe;
+		}
+		 */
 	}
 	
-	public void run (String lineFileName)
+	public static void run (String lineFileName, String stopWordFileName)
 	{
-		FileReader fileReader = new FileReader();
-		ArrayList<ArrayList<String>> parsedLines = fileReader.getLines(lineFileName); //Get the lines from the file
+		Filter[] filters = new Filter[] {new FileReader(), new CircularShifter(), new Sorter(), new FileWriter()};
 		
-		if (parsedLines == null) // if there are no lines in the file, just return. Probably an error
-			return;
+		ArrayList<String> arguments = new ArrayList<String>();
+		arguments.add(lineFileName);
+		arguments.add(stopWordFileName);
+		filters[0].setInPipe(new Pipe(arguments));
 		
-		Lines lines = new Lines(parsedLines);
+		for (int i = 0; i < filters.length - 1; i++)
+		{
+			Pipe pipe = new Pipe();
+			filters[i].setOutPipe(pipe);
+			filters[i+1].setInPipe(pipe);
+		}
 		
-		CircularShifter circularShifter = new CircularShifter(lines);
-		circularShifter.createCircularShifts(); // create all combinations of circularly shifted lines
-		
-		Sorter sorter = new Sorter(circularShifter);
-		sorter.alphabatizeLines(); // sort the lines by value
-		
-		FileWriter fileWriter = new FileWriter(sorter.getSortedLines());
-		fileWriter.writeLinesToFile(); // write the output to a file
-	}
-	
-	public void run (String lineFileName, String stopWordFileName)
-	{
-		FileReader fileReader = new FileReader();
-		ArrayList<ArrayList<String>> parsedLines = fileReader.getLines(lineFileName); // read the lines from a file
-		ArrayList<String> stopWords = fileReader.getStopWords(stopWordFileName); // read the stop words from a file
-		
-		if (parsedLines == null || stopWords == null) // if there are no lines in the file, just return. Probably an error
-			return;
-		
-		Lines lines = new Lines(parsedLines);
-		
-		CircularShifter circularShifter = new CircularShifter(lines);
-		circularShifter.createCircularShifts(); // create all combinations of circularly shifted lines
-		
-		Sorter sorter = new Sorter(circularShifter, stopWords);
-		sorter.alphabatizeLines(); // sort the lines, and remove stop words
-		
-		FileWriter fileWriter = new FileWriter(sorter.getSortedLines());
-		fileWriter.writeLinesToFile(); // write the output to a file
+		for (Filter filter : filters)
+		{
+			filter.run();
+		}
 	}
 
+	public static String arrayListToString(ArrayList<String> list)
+	{
+		String string = "";
+		
+		for (int i = 0; i < list.size(); i++)
+		{
+			if (i == 0)
+				string = list.get(i);
+			else
+				string = string + " " + list.get(i);
+		}
+		
+		return string;
+	}
+	
 	public static void main(String[] args)
 	{
 		// If there are 2 arguments, there is no stop word file
@@ -64,8 +93,7 @@ public class KWICApp {
 		{
 			if (args[0].equalsIgnoreCase("-f"))
 			{
-				KWICApp kwicapp = new KWICApp();
-				kwicapp.run(args[1]);
+				KWICApp.run(args[1]);
 				
 				return;
 			}
@@ -89,8 +117,7 @@ public class KWICApp {
 			
 			if (!(sIndex == -1 || fIndex == -1))
 			{
-				KWICApp kwicapp = new KWICApp();
-				kwicapp.run(args[fIndex], args[sIndex]);
+				KWICApp.run(args[fIndex], args[sIndex]);
 				
 				return;
 			}
