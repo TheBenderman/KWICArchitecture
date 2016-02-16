@@ -61,12 +61,12 @@ public class FileReader extends Filter{
 		catch(FileNotFoundException fNF)
 		{
 			System.out.println("Error! File: " + fileName + " not found!"); // Return if the file is not found
-			return null;
+			return new ArrayList<String>();
 		}
 		catch(IOException io)
 		{
 			System.out.println("Error reading file: " + fileName + "!"); // Return if there is an error reading the file
-			return null;
+			return new ArrayList<String>();
 		}
 		
 		return lines;
@@ -91,12 +91,12 @@ public class FileReader extends Filter{
 		catch(FileNotFoundException fNF)
 		{
 			System.out.println("Error! File: " + fileName + " not found!"); // return null if the file is not found
-			return null;
+			return new ArrayList<String>();
 		}
 		catch(IOException io)
 		{
 			System.out.println("Error reading file: " + fileName + "!"); // return null if there is an error reading the file
-			return null;
+			return new ArrayList<String>();
 		}
 		
 		return stopWords;
