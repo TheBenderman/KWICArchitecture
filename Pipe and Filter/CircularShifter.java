@@ -16,11 +16,12 @@ public class CircularShifter extends Filter{
 		
 	}
 	
+	// run the filter
 	public void run()
 	{
-		ArrayList<String> lines = inPipe.read();
-		ArrayList<String> shiftedLines = createCircularShifts(lines);
-		outPipe.write(shiftedLines);
+		ArrayList<String> lines = inPipe.read(); // read the lines from the input pipe
+		ArrayList<String> shiftedLines = createCircularShifts(lines); // create the circular shifts for the current lines
+		outPipe.write(shiftedLines); // write the circular shifts to the output pipe
 	}
 	
 	// create all possible circular shifts
@@ -32,13 +33,13 @@ public class CircularShifter extends Filter{
 		// iterate over each line
 		for (String stringLine : lines)
 		{
+			// did we find the stop words?
 			if (stringLine.equals("#_STOP_WORDS"))
-			{
 				foundStopWords = true;
-			}
 			
-			ArrayList<String> line = new ArrayList(Arrays.asList(stringLine.split(" ")));
+			ArrayList<String> line = new ArrayList<String>(Arrays.asList(stringLine.split(" ")));
 			
+			// we don't want to create circular shifts if we are currently reading the stop words
 			if (!foundStopWords)
 			{
 				ArrayList<String> shiftedLine;
@@ -64,9 +65,7 @@ public class CircularShifter extends Filter{
 				}
 			}
 			else
-			{
-				shiftedLines.add(stringLine);
-			}
+				shiftedLines.add(stringLine); // add the stop word to the collection
 		}
 		
 		return shiftedLines;

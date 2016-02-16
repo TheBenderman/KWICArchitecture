@@ -15,36 +15,40 @@ public class Sorter extends Filter {
 	private ArrayList<ArrayList<String>> lines;
 	private ArrayList<String> stopWords;
 	
+	// run the filter
 	public void run()
 	{
 		lines = new ArrayList<ArrayList<String>>();
 		stopWords = new ArrayList<String>();
 		
-		ArrayList<String> input = inPipe.read();
-		readLinesAndStopWords(input);
-		removeStopWords();
-		alphabatizeLines();
+		ArrayList<String> input = inPipe.read(); // read the lines from the input pipe
+		readLinesAndStopWords(input); // read all of the lines and stop words
+		removeStopWords(); // remove all of the lines that have the stop words as the key
+		alphabatizeLines(); // sort the lines alphabetically
 		
-		outPipe.write(convertEachLineToString());
+		outPipe.write(convertEachLineToString()); // write the lines to the output pipe
 	}
 	
+	// read all of the lines and stop words from a buffer
 	public void readLinesAndStopWords(ArrayList<String> input)
 	{
 		boolean stopWordsFound = false;
+		
+		// for each of the strings in the array list, parse them
 		for(int i = 0; i < input.size(); i++)
 		{
+			// if we found the stop words, we no longer want to parse lines
 			if (input.get(i).equals("#_STOP_WORDS"))
 			{
 				stopWordsFound = true;
 				continue;
 			}
 			
+			// if we found the stop words delimeter, add the string to the stop words
 			if (stopWordsFound)
 				stopWords.add(input.get(i));
-			else
-			{
+			else // otherwise, add the string to the lines
 				lines.add(new ArrayList<String>(Arrays.asList(input.get(i).split(" "))));
-			}
 		}
 	}
 
@@ -71,8 +75,10 @@ public class Sorter extends Filter {
 		}
 	}
 	
+	// remove the lines that have a stop word as the key
 	public void removeStopWords()
 	{
+		// make sure we have stop words before trying
 		if(stopWords != null && !stopWords.isEmpty())
 		{
 			ArrayList<ArrayList<String>> tempLines = new ArrayList<ArrayList<String>>();
@@ -89,14 +95,14 @@ public class Sorter extends Filter {
 		}
 	}
 	
+	// since we are using an ArrayList<ArrayList<String>>, we want to convert the inner arraylist to a string, since the 
+	// pipe expects an 1D array
 	public ArrayList<String> convertEachLineToString()
 	{
 		ArrayList<String> linesAsStrings = new ArrayList<String>();
 		
 		for (ArrayList<String> line : lines)
-		{
 			linesAsStrings.add(KWICApp.arrayListToString(line));
-		}
 		
 		return linesAsStrings;
 	}

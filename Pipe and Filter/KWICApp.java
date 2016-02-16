@@ -11,15 +11,23 @@ import java.util.ArrayList;
 
 public class KWICApp {
 	
+	// run the KWIC app without any stop words
 	public static void run (String lineFileName)
 	{
+		// Set the array of filters in the order that I wish to process them
 		Filter[] filters = new Filter[] {new FileReader(), new CircularShifter(), new Sorter(), new FileWriter()};
 		
+		// add the file name for the lines to the arguments
 		ArrayList<String> arguments = new ArrayList<String>();
 		arguments.add(lineFileName);
 		
+		// set the input pipe for the first filter to include the arguments (file names).
 		filters[0].setInPipe(new Pipe(arguments));
 		
+		// for each filter, create a new pipe, set the pipe as the current filter's output pipe, and the pipe as the next 
+		// filter's input pipe
+		// so it looks like this:
+		//		filter[i] -> pipe -> filter[i+1]
 		for (int i = 0; i < filters.length - 1; i++)
 		{
 			Pipe pipe = new Pipe();
@@ -27,37 +35,28 @@ public class KWICApp {
 			filters[i+1].setInPipe(pipe);
 		}
 		
+		// run each filter
 		for (Filter filter : filters)
-		{
 			filter.run();
-		}
-		
-		/* 
-		Pipe inPipe = new Pipe(arguments);
-		Pipe outPipe = new Pipe();
-		
-		for (int i = 0; i < filters.length - 1; i++)
-		{
-			outPipe = new Pipe();
-			filters[i].setInPipe(inPipe);
-			filters[i].setOutPipe(outPipe);
-			
-			filters[i].run();
-			
-			inPipe = outPipe;
-		}
-		 */
 	}
 	
+	// run the KWIC app with stop words
 	public static void run (String lineFileName, String stopWordFileName)
 	{
 		Filter[] filters = new Filter[] {new FileReader(), new CircularShifter(), new Sorter(), new FileWriter()};
 		
+		// add the file name for the lines and file name for stop words to the arguments
 		ArrayList<String> arguments = new ArrayList<String>();
 		arguments.add(lineFileName);
 		arguments.add(stopWordFileName);
+		
+		// set the input pipe for the first filter to include the arguments (file names).
 		filters[0].setInPipe(new Pipe(arguments));
 		
+		// for each filter, create a new pipe, set the pipe as the current filter's output pipe, and the pipe as the next 
+		// filter's input pipe
+		// so it looks like this:
+		//		filter[i] -> pipe -> filter[i+1]
 		for (int i = 0; i < filters.length - 1; i++)
 		{
 			Pipe pipe = new Pipe();
@@ -66,15 +65,15 @@ public class KWICApp {
 		}
 		
 		for (Filter filter : filters)
-		{
 			filter.run();
-		}
 	}
 
+	// this function converts an array list of strings to a string (concatenates all strings together)
 	public static String arrayListToString(ArrayList<String> list)
 	{
 		String string = "";
 		
+		// concatenate all elements of the array together with a space in between (creating a sentence)
 		for (int i = 0; i < list.size(); i++)
 		{
 			if (i == 0)

@@ -21,10 +21,12 @@ public class FileWriter extends Filter{
 		
 	}
 	
+	// run the filter
 	public void run()
 	{
-		ArrayList<String> input = inPipe.read();
-		writeLinesToFile(input);
+		ArrayList<String> input = inPipe.read(); // read the lines from the input pipe
+		writeLinesToFile(input); // output the lines to system.out
+		// there is no writing to a pipe since we are finished
 	}
 	
 	// Write the lines to a file

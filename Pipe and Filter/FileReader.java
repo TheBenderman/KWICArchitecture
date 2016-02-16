@@ -22,25 +22,27 @@ public class FileReader extends Filter{
 	{
 	}
 	
+	// run the filter
 	public void run()
 	{
-		ArrayList<String> arguments = inPipe.read();
+		ArrayList<String> arguments = inPipe.read(); // read the arguments from the inpipe
 		ArrayList<String> lines = new ArrayList<String>();
 		
-		if (arguments.size() == 1)
+		if (arguments.size() == 1) // if there is one argument, there are no stop words
 		{
-			lines.addAll(getLines(arguments.get(0)));
+			lines.addAll(getLines(arguments.get(0))); // add all of the lines to the collection
 		}
-		else if (arguments.size() == 2)
+		else if (arguments.size() == 2) // if there are two arguments, there are stop words
 		{
-			lines.addAll(getLines(arguments.get(0)));
-			lines.add("#_STOP_WORDS");
-			lines.addAll(getStopWords(arguments.get(1)));
+			lines.addAll(getLines(arguments.get(0))); // add all of the lines to the collection
+			lines.add("#_STOP_WORDS"); // add the stop words delimeter to the collection
+			lines.addAll(getStopWords(arguments.get(1))); // add all of the stop words to the collection
 		}
 		
 		outPipe.write(lines);
 	}
 	
+	// get all of the lines from the file and return an array with them
 	public ArrayList<String> getLines(String fileName)
 	{
 		ArrayList<String> lines = new ArrayList<String>();
@@ -70,6 +72,7 @@ public class FileReader extends Filter{
 		return lines;
 	}
 	
+	// read all of the stop words from the file
 	public ArrayList<String> getStopWords(String fileName)
 	{
 		ArrayList<String> stopWords = new ArrayList<String>();
