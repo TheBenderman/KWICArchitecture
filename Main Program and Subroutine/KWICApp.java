@@ -3,9 +3,8 @@
 // Written by : Nathan Bender
 //
 // Purpose:
-// Main driver class for the KWIC application. Reads the initial parameters for the program provided by the user.
-// Determines if the user wishes to provide a list of stop words or not. Calls each of the other classes that perform
-// their duties for the KWIC program. Also does some basic error checking for program parameters.
+// Main program class that performs all functionality for the KWIC Application. Each procedure performs one of the
+// functions originally performed performed by the classes in the other two architectural styles.
 
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
@@ -22,17 +21,20 @@ import java.util.List;
 
 public class KWICApp {
 	
-	private ArrayList<ArrayList<String>> data;
+	private ArrayList<ArrayList<String>> data; // shared data to be used by each procedure
 	
+	// constructor, initialize the shared data section
 	public KWICApp()
 	{
 		data = new ArrayList<ArrayList<String>>();
 	}
 	
+	// get all of the lines from a file called "filename"
 	public void getLinesFromFile(String filename)
 	{
 		// Read all of the lines from the file
 		List<String> linesList;
+		
 		try {
 			linesList = Files.readAllLines(Paths.get(filename), StandardCharsets.UTF_8);
 			
@@ -52,6 +54,7 @@ public class KWICApp {
 		}
 	}
 	
+	// get all of the stop words from the file called "filename"
 	public void getStopWordsFromFile(String filename)
 	{	
 		try
@@ -60,7 +63,7 @@ public class KWICApp {
 			List<String> linesList = Files.readAllLines(Paths.get(filename), StandardCharsets.UTF_8);
 			
 			ArrayList<String> stopwords = new ArrayList<String>();
-			stopwords.add("#_STOP_WORDS");
+			stopwords.add("#_STOP_WORDS"); // add the stop words delimeter
 			
 			for (String line : linesList)
 			{
@@ -80,14 +83,17 @@ public class KWICApp {
 		}
 	}
 	
+	// create all possible circular shifts from the input lines, and save them back to the shared data
 	public void createCircularShifts()
 	{
 		ArrayList<ArrayList<String>> shiftedLines = new ArrayList<ArrayList<String>>();
-		// iterate over each line
+		
+		// iterate over each line, and create all circular shifts
 		for (ArrayList<String> line : data)
 		{	
 			ArrayList<String> shiftedLine;
 			
+			// if this is the array that contains the stop words, just add it back
 			if (line.size() > 0 && line.get(0).equals("#_STOP_WORDS"))
 			{
 				shiftedLines.add(line);
@@ -116,19 +122,22 @@ public class KWICApp {
 			}
 		}
 		
-		data = shiftedLines;
+		data = shiftedLines; // save our temporary array back to the shared data section
 	}
 	
+	// sort all of the lines that were created by the circular shifts. also remove all stop words
 	public void sortLines()
 	{
 		ArrayList<ArrayList<String>> lines = new ArrayList<ArrayList<String>>();
 		ArrayList<String> stopWords = new ArrayList<String>();
 		
+		// first, create two lists. one of the lists will contain the lines, the other contains the stop words
 		for(int i = 0; i < data.size(); i++)
 		{
 			// if we found the stop words, we no longer want to parse lines
 			if (data.get(i).size() > 0 && data.get(i).get(0).equals("#_STOP_WORDS"))
 			{
+				// add each stop word to the list
 				for (int j = 0; j < data.get(i).size(); j++)
 				{
 					if (!data.get(i).get(j).equals("#_STOP_WORDS"))
@@ -136,7 +145,7 @@ public class KWICApp {
 				}
 			}
 			else
-				lines.add(data.get(i));
+				lines.add(data.get(i)); // otherwise, add the line to the list of lines
 		}
 		
 		// Using bubble sort to sort the lines
@@ -174,9 +183,10 @@ public class KWICApp {
 			lines = tempLines; // copy the temporary collection to the list of lines
 		}
 		
-		data = lines;
+		data = lines; // save our temporary array back to the shared data
 	}
 	
+	// write all of the sorted lines to a file
 	public void writeToFile()
 	{
 		try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("output.txt"), "utf-8"))) 
