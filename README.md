@@ -21,31 +21,57 @@ Example input:
 
 The expected output is:
 >	Key				Value
+
 >	-------------------------------------------------
+
 >	A				New Hope 
+
 >	Awakens				The Force 
+
 >	Back				The Empire Strikes 
+
 >	Clone				Wars The 
+
 >	Empire				Strikes Back The 
+
 >	Force				Awakens The
+
 >	Hope				A New 
+
 >	Jedi				Return of the 
+
 >	Menace				The Phantom 
+
 >	New				Hope A 
+
 >	of				the Sith The Revenge 
+
 >	of				the Jedi Return 
+
 >	Phantom				Menace The 
+
 >	Return				of the Jedi 
+
 >	Revenge				of the Sith The 
+
 >	Sith				The Revenge of the 
+
 >	Strikes				Back The Empire 
+
 >	The				Phantom Menace 
+
 >	The				Clone Wars 
+
 >	The				Revenge of the Sith 
+
 >	the				Sith The Revenge of 
+
 >	The				Empire Strikes Back 
+
 >	the				Jedi Return of 
+
 >	The				Force Awakens 
+
 >	Wars				The Clone 
 
 The key is the keyword that is sort alphabetically, and then the value is the rest of the sentence that may be circularly shifted. For example, if the keyword occurs in the middle of the sentence, the value will start with the continuation of the sentence, and then wrap around to the words in the sentence that occurred before the keyword.
